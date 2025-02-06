@@ -1,0 +1,46 @@
+<div class="container mx-auto px-4">
+  <h2 class="text-2xl font-semibold leading-tight">Lista de Hoteles</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white">
+      <thead>
+        <tr>
+          <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Nombre</th>
+          <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">NIT</th>
+          <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">RNT</th>
+          <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Dirección</th>
+          <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Nombre Rep. Legal</th>
+          <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Teléfono</th>
+          <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Activo - Inactivo</th>
+          <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hotel of paginatedHotels">
+          <td class="py-2 px-4 border-b border-gray-200">{{ hotel.nombre }}</td>
+          <td class="py-2 px-4 border-b border-gray-200">{{ hotel.nit }}</td>
+          <td class="py-2 px-4 border-b border-gray-200">{{ hotel.rnt }}</td>
+          <td class="py-2 px-4 border-b border-gray-200">{{ hotel.direccion }}</td>
+          <td class="py-2 px-4 border-b border-gray-200">{{ hotel.nombreRepLegal }}</td>
+          <td class="py-2 px-4 border-b border-gray-200">{{ hotel.telefono }}</td>
+          <td class="py-2 px-4 border-b border-gray-200 text-center">
+            <input type="hidden" [value]="hotel.idHotel">
+            <label class="switch" [title]="hotel.estado ? 'Activo' : 'Inactivo'">
+              <input type="checkbox" [checked]="hotel.estado" (change)="toggleHotelStatus(hotel)">
+              <span class="slider" [ngClass]="{'bg-blue-500': hotel.estado, 'bg-green-500': !hotel.estado}"></span>
+            </label>
+          </td>
+          <td class="py-2 px-4 border-b border-gray-200">
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" (click)="viewRooms(hotel)">
+              Habitaciones
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+      <span>Página {{currentPage}}</span>
+      <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage * pageSize >= totalItems">Siguiente</button>
+    </div>
+  </div>
+</div>

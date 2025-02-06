@@ -1,0 +1,82 @@
+<div class="container mx-auto px-4">
+  <mat-accordion #accordion>
+    <mat-expansion-panel #registerPanel>
+      <mat-expansion-panel-header class="accordion-title">
+        <mat-panel-title>
+          Registrar Habitación
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="habitacionForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+          <label for="numeroHabitacion" class="block text-gray-700 text-sm font-bold mb-2">Número de Habitación:</label>
+          <input id="numeroHabitacion" formControlName="numeroHabitacion" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Número de Habitación">
+          <div *ngIf="habitacionForm.get('numeroHabitacion')?.invalid && habitacionForm.get('numeroHabitacion')?.touched" class="text-red-500 text-xs italic">Este campo es obligatorio.</div>
+        </div>
+        <div class="mb-4">
+          <label for="descripcion" class="block text-gray-700 text-sm font-bold mb-2">Descripción:</label>
+          <input id="descripcion" formControlName="descripcion" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Descripción">
+          <div *ngIf="habitacionForm.get('descripcion')?.invalid && habitacionForm.get('descripcion')?.touched" class="text-red-500 text-xs italic">Este campo es obligatorio.</div>
+        </div>
+        <div class="mb-4">
+          <label for="capacidad" class="block text-gray-700 text-sm font-bold mb-2">Capacidad:</label>
+          <input id="capacidad" formControlName="capacidad" type="number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Capacidad">
+          <div *ngIf="habitacionForm.get('capacidad')?.invalid && habitacionForm.get('capacidad')?.touched" class="text-red-500 text-xs italic">Este campo es obligatorio y debe ser un número mayor que 0.</div>
+        </div>
+        <div class="mb-4">
+          <label for="precioBase" class="block text-gray-700 text-sm font-bold mb-2">Precio Base:</label>
+          <input id="precioBase" formControlName="precioBase" type="number" step="0.01" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Precio Base">
+          <div *ngIf="habitacionForm.get('precioBase')?.invalid && habitacionForm.get('precioBase')?.touched" class="text-red-500 text-xs italic">Este campo es obligatorio y debe ser un número mayor o igual a 0.</div>
+        </div>
+        <div class="mb-4" formGroupName="tipoHabitacion">
+          <label for="tipoHabitacion" class="block text-gray-700 text-sm font-bold mb-2">Tipo de Habitación:</label>
+          <select id="tipoHabitacion" formControlName="idTipoHabitacion" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option *ngFor="let tipo of tiposHabitacion" [value]="tipo.idTipoHabitacion">{{ tipo.nombre }}</option>
+          </select>
+          <div *ngIf="habitacionForm.get('tipoHabitacion.idTipoHabitacion')?.invalid && habitacionForm.get('tipoHabitacion.idTipoHabitacion')?.touched" class="text-red-500 text-xs italic">Este campo es obligatorio.</div>
+        </div>
+        <div class="flex items-center justify-between">
+          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Guardar</button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+    <mat-expansion-panel #hotelPanel>
+      <mat-expansion-panel-header class="accordion-title">
+        <mat-panel-title>
+          Habitaciones del Hotel
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Número</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Descripción</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Capacidad</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Precio Base</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Tipo</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Activo - Inactivo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let habitacion of paginatedHabitaciones">
+              <td class="py-2 px-4 border-b border-gray-200">{{ habitacion.numeroHabitacion }}</td>
+              <td class="py-2 px-4 border-b border-gray-200">{{ habitacion.descripcion }}</td>
+              <td class="py-2 px-4 border-b border-gray-200">{{ habitacion.capacidad }}</td>
+              <td class="py-2 px-4 border-b border-gray-200">{{ habitacion.precioBase }}</td>
+              <td class="py-2 px-4 border-b border-gray-200">{{ habitacion.tipoHabitacion?.nombre }}</td>
+              <td class="py-2 px-4 border-b border-gray-200 text-center">
+                <input type="hidden" [value]="habitacion.idHabitacion">
+                <label class="switch" [title]="habitacion.estado ? 'Activo' : 'Inactivo'">
+                  <input type="checkbox" [checked]="habitacion.estado" (change)="toggleEstado(habitacion)">
+                  <span class="slider" [ngClass]="{'bg-blue-500': habitacion.estado, 'bg-green-500': !habitacion.estado}"></span>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <mat-paginator [length]="habitaciones.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)">
+        </mat-paginator>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

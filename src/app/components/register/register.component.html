@@ -1,0 +1,60 @@
+<div class="parent">
+    <div class="container">
+        <img src="assets/images/logo.png" alt="Logo">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <h1>Register</h1>
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+            <div class="input-box" [ngClass]="{'input-error': userExists || (registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched)}">
+                <label for="nombre">Nombre:</label>
+                <input id="nombre" formControlName="nombre" type="text" placeholder="Escribe tu nombre">
+                <div *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched">
+                    <small>El nombre es obligatorio</small>
+                </div>
+            </div>
+            <div class="input-box" [ngClass]="{'input-error': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
+                <label for="email">Email:</label>
+                <input id="email" formControlName="email" type="email" placeholder="Escribe tu email">
+                <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                    <small>Debe ser un correo electrónico válido</small>
+                </div>
+            </div>
+            <div class="input-box" [ngClass]="{'input-error': registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched}">
+                <label for="telefono">Teléfono:</label>
+                <input id="telefono" formControlName="telefono" type="text" placeholder="Escribe tu teléfono">
+                <div *ngIf="registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched">
+                    <small>Debe ser un número de teléfono válido</small>
+                </div>
+            </div>
+            <div class="input-box" [ngClass]="{'input-error': userExists || (registerForm.get('usuario')?.invalid && registerForm.get('usuario')?.touched)}">
+                <label for="usuario">Usuario:</label>
+                <input id="usuario" formControlName="usuario" type="text" placeholder="Escribe tu usuario">
+                <div *ngIf="registerForm.get('usuario')?.invalid && registerForm.get('usuario')?.touched">
+                    <small>El usuario es obligatorio</small>
+                </div>
+                <div *ngIf="userExists">
+                    <a routerLink="/recover-password">Recuperar contraseña</a>
+                </div>
+            </div>
+            <div class="input-box" [ngClass]="{'input-error': registerForm.get('clave')?.invalid && registerForm.get('clave')?.touched}">
+                <label for="clave">Clave:</label>
+                <input id="clave" formControlName="clave" type="password" placeholder="Escribe tu clave">
+                <div *ngIf="registerForm.get('clave')?.invalid && registerForm.get('clave')?.touched">
+                    <small>La clave debe tener al menos 6 caracteres</small>
+                </div>
+            </div>
+            <div class="input-box" [ngClass]="{'input-error': registerForm.get('confirmarClave')?.invalid && registerForm.get('confirmarClave')?.touched}">
+                <label for="confirmarClave">Confirmar Clave:</label>
+                <input id="confirmarClave" formControlName="confirmarClave" type="password" placeholder="Confirma tu clave">
+                <div *ngIf="!passwordsMatch && registerForm.get('confirmarClave')?.touched">
+                    <small>Las claves no coinciden</small>
+                </div>
+            </div>
+            <button class="button" type="submit">Register</button>
+            <div class="register">
+                <p>Already have an account? <br> <a routerLink="/login">Login</a></p>
+            </div>
+        </form>
+    </div>
+</div>

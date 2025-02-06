@@ -1,0 +1,109 @@
+.parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #2a5298, #1e3c72);
+}
+
+.container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.input-box {
+  margin-bottom: 1rem;
+}
+
+.input-box label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  color: #333;
+}
+
+.input-box input:focus {
+  border-color: #2a5298;
+  outline: none;
+  background-color: #fff;
+}
+
+.remember {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.remember input {
+  margin-right: 0.5rem;
+}
+
+.remember a {
+  color: #2a5298;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.remember a:hover {
+  text-decoration: underline;
+}
+
+.button {
+  background-color: #2a5298;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.button:hover {
+  background-color: #1e3c72;
+}
+
+.register {
+  text-align: center;
+}
+
+.register a {
+  color: #2a5298;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.register a:hover {
+  text-decoration: underline;
+}
+
+small {
+  color: red;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 15px;
+}

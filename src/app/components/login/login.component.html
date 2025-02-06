@@ -1,0 +1,26 @@
+<div class="parent">
+    <div class="container">
+        <img src="assets/images/logo.png" alt="Logo">
+        <form [formGroup]="userForm">
+            <h1>Login</h1>
+            <div class="input-box">
+                <label for="username">Username:</label>
+                <input id="username" formControlName="username" type="text" placeholder="Enter your username">
+            </div>
+            <div class="input-box">
+                <label for="password">Password:</label>
+                <input id="password" formControlName="password" type="password" placeholder="Enter your password">
+            </div>
+            <div class="remember">
+                <label>
+                    <input type="checkbox"> Remember me
+                </label>
+                <a href="#">Forgot Password</a>
+            </div>
+            <button class="button" (click)="doLogin()">Login</button>
+            <div class="register">
+                <p>Don't have an account? <br> <a routerLink="/register">Register</a></p>
+            </div>
+        </form>
+    </div>
+</div>

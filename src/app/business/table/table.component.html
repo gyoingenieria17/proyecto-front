@@ -1,0 +1,94 @@
+<div class="container mx-auto px-4">
+  <h2 class="text-2xl font-semibold leading-tight">Registrar Hotel</h2>
+  <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('nombre')?.invalid && hotelForm.get('nombre')?.touched}">
+      <label for="nombre">Nombre:</label>
+      <input id="nombre" formControlName="nombre" type="text" placeholder="Escribe el nombre del hotel">
+      <div *ngIf="hotelForm.get('nombre')?.invalid && hotelForm.get('nombre')?.touched">
+        <small>El nombre es obligatorio</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('nit')?.invalid && hotelForm.get('nit')?.touched}">
+      <label for="nit">NIT:</label>
+      <input id="nit" formControlName="nit" type="text" placeholder="Escribe el NIT del hotel">
+      <div *ngIf="hotelForm.get('nit')?.invalid && hotelForm.get('nit')?.touched">
+        <small>El NIT es obligatorio</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('rnt')?.invalid && hotelForm.get('rnt')?.touched}">
+      <label for="rnt">RNT:</label>
+      <input id="rnt" formControlName="rnt" type="text" placeholder="Escribe el RNT del hotel">
+      <div *ngIf="hotelForm.get('rnt')?.invalid && hotelForm.get('rnt')?.touched">
+        <small>El RNT es obligatorio</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('matriculaMercantil')?.invalid && hotelForm.get('matriculaMercantil')?.touched}">
+      <label for="matriculaMercantil">Matrícula Mercantil:</label>
+      <input id="matriculaMercantil" formControlName="matriculaMercantil" type="text" placeholder="Escribe la matrícula mercantil del hotel">
+      <div *ngIf="hotelForm.get('matriculaMercantil')?.invalid && hotelForm.get('matriculaMercantil')?.touched">
+        <small>La matrícula mercantil es obligatoria</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('direccion')?.invalid && hotelForm.get('direccion')?.touched}">
+      <label for="direccion">Dirección:</label>
+      <input id="direccion" formControlName="direccion" type="text" placeholder="Escribe la dirección del hotel">
+      <div *ngIf="hotelForm.get('direccion')?.invalid && hotelForm.get('direccion')?.touched">
+        <small>La dirección es obligatoria</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('nombreRepLegal')?.invalid && hotelForm.get('nombreRepLegal')?.touched}">
+      <label for="nombreRepLegal">Nombre Rep. Legal:</label>
+      <input id="nombreRepLegal" formControlName="nombreRepLegal" type="text" placeholder="Escribe el nombre del representante legal">
+      <div *ngIf="hotelForm.get('nombreRepLegal')?.invalid && hotelForm.get('nombreRepLegal')?.touched">
+        <small>El nombre del representante legal es obligatorio</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('telefono')?.invalid && hotelForm.get('telefono')?.touched}">
+      <label for="telefono">Teléfono:</label>
+      <input id="telefono" formControlName="telefono" type="text" placeholder="Escribe el teléfono del hotel">
+      <div *ngIf="hotelForm.get('telefono')?.invalid && hotelForm.get('telefono')?.touched">
+        <small>El teléfono es obligatorio</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('email')?.invalid && hotelForm.get('email')?.touched}">
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email" placeholder="Escribe el email del hotel">
+      <div *ngIf="hotelForm.get('email')?.invalid && hotelForm.get('email')?.touched">
+        <small>El email es obligatorio y debe ser válido</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('telefonoRepLegal')?.invalid && hotelForm.get('telefonoRepLegal')?.touched}">
+      <label for="telefonoRepLegal">Teléfono Rep. Legal:</label>
+      <input id="telefonoRepLegal" formControlName="telefonoRepLegal" type="text" placeholder="Escribe el teléfono del representante legal">
+      <div *ngIf="hotelForm.get('telefonoRepLegal')?.invalid && hotelForm.get('telefonoRepLegal')?.touched">
+        <small>El teléfono del representante legal es obligatorio</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('emailRepLegal')?.invalid && hotelForm.get('emailRepLegal')?.touched}">
+      <label for="emailRepLegal">Email Rep. Legal:</label>
+      <input id="emailRepLegal" formControlName="emailRepLegal" type="email" placeholder="Escribe el email del representante legal">
+      <div *ngIf="hotelForm.get('emailRepLegal')?.invalid && hotelForm.get('emailRepLegal')?.touched">
+        <small>El email del representante legal es obligatorio y debe ser válido</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('nombreContacto')?.invalid && hotelForm.get('nombreContacto')?.touched}">
+      <label for="nombreContacto">Nombre Contacto:</label>
+      <input id="nombreContacto" formControlName="nombreContacto" type="text" placeholder="Escribe el nombre del contacto">
+      <div *ngIf="hotelForm.get('nombreContacto')?.invalid && hotelForm.get('nombreContacto')?.touched">
+        <small>El nombre del contacto es obligatorio</small>
+      </div>
+    </div>
+    <div class="input-box" [ngClass]="{'input-error': hotelForm.get('telefonoContacto')?.invalid && hotelForm.get('telefonoContacto')?.touched}">
+      <label for="telefonoContacto">Teléfono Contacto:</label>
+      <input id="telefonoContacto" formControlName="telefonoContacto" type="text" placeholder="Escribe el teléfono del contacto">
+      <div *ngIf="hotelForm.get('telefonoContacto')?.invalid && hotelForm.get('telefonoContacto')?.touched">
+        <small>El teléfono del contacto es obligatorio</small>
+      </div>
+    </div>
+    <div class="flex items-center justify-between">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+        Registrar
+      </button>
+    </div>
+  </form>
+</div>
