@@ -1,18 +1,24 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { IntegrationService } from '../../services/integration.service';
-import { PageEvent } from '@angular/material/paginator';
-import { MatExpansionModule, MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { FormsModule } from '@angular/forms';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatAccordion, MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
+import { Observable } from 'rxjs';
 import { FilterService } from '../../services/filter.service';
+import { TipoHabitacion } from '../../models/tipo-habitacion';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-habitaciones',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatExpansionModule, MatPaginatorModule, RouterModule],
+  imports: [
+    MatAccordion,
+    MatExpansionModule,
+    RouterModule,
+    ReactiveFormsModule,
+    CommonModule,
+    MatPaginator
+  ],
   templateUrl: './habitaciones.component.html',
   styleUrls: ['./habitaciones.component.css']
 })
@@ -20,16 +26,19 @@ export class HabitacionesComponent implements OnInit {
   @ViewChild('accordion') accordion!: MatAccordion;
   @ViewChild('registerPanel') registerPanel!: MatExpansionPanel;
   @ViewChild('hotelPanel') hotelPanel!: MatExpansionPanel;
+  @ViewChild('disponibilidadPanel') disponibilidadPanel!: MatExpansionPanel;
 
   habitacionForm: FormGroup;
-  idHotel: number = 0; // Inicializar con un valor predeterminado
-  tiposHabitacion: any[] = []; // Lista de tipos de habitación
-  habitaciones: any[] = []; // Lista de habitaciones del hotel
-  paginatedHabitaciones: any[] = []; // Lista de habitaciones paginadas
-  filteredHabitaciones: any[] = []; // Lista de habitaciones filtradas
-  pageSize = 10; // Tamaño de la página
-  currentPage = 0; // Página actual
-  filterText: string = ''; // Texto del filtro
+  idHotel: number = 0;
+  tiposHabitacion: any[] = [];
+  habitaciones: any[] = [];
+  paginatedHabitaciones: any[] = [];
+  filteredHabitaciones: any[] = [];
+  cantidadesPorTipo: any[] = [];
+  paginatedCantidadesPorTipo: any[] = [];
+  pageSize = 10;
+  currentPage = 0;
+  filterText: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -59,10 +68,9 @@ export class HabitacionesComponent implements OnInit {
       this.loadHabitaciones();
     }
 
-    // Cargar los tipos de habitación (esto es solo un ejemplo, ajusta según tu implementación)
     this.loadTiposHabitacion();
+    this.loadCantidadesPorTipo();
 
-    // Suscribirse al filtro
     this.filterService.filter$.subscribe(filterText => {
       this.filterText = filterText;
       this.applyFilter();
@@ -78,7 +86,7 @@ export class HabitacionesComponent implements OnInit {
   }
 
   loadHabitaciones(): void {
-   // console.log('Cargando habitaciones...');
+    //console.log('Cargando habitaciones...');
     this.habitaciones = [];
     this.filteredHabitaciones = [];
     this.paginatedHabitaciones = [];
@@ -95,11 +103,38 @@ export class HabitacionesComponent implements OnInit {
     });
   }
 
+  loadCantidadesPorTipo(): void {
+    const fecha = new Date().toISOString().split('T')[0];
+    this.integrationService.getDisponibilidadPorTipo(1, fecha, fecha).subscribe({
+      next: (data: TipoHabitacion[]) => {
+        this.cantidadesPorTipo = data
+          .filter((tipo: TipoHabitacion) => tipo.idHotel === this.idHotel)
+          .map((tipo: TipoHabitacion) => ({
+            nombre: tipo.tipo,
+            disponibles: tipo.disponibles,
+            noDisponibles: tipo.noDisponibles,
+            total: tipo.disponibles + tipo.noDisponibles
+          }));
+        this.paginateCantidadesPorTipo();
+      },
+      error: error => {
+        console.error('Error al cargar las cantidades por tipo:', error);
+      }
+    });
+  }
+
   paginateHabitaciones(): void {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.paginatedHabitaciones = this.filteredHabitaciones.slice(startIndex, endIndex);
-    console.log('Habitaciones paginadas:', this.paginatedHabitaciones);
+    //console.log('Habitaciones paginadas:', this.paginatedHabitaciones);
+  }
+
+  paginateCantidadesPorTipo(): void {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedCantidadesPorTipo = this.cantidadesPorTipo.slice(startIndex, endIndex);
+    //console.log('Cantidades por tipo paginadas:', this.paginatedCantidadesPorTipo);
   }
 
   onPageChange(event: PageEvent): void {
@@ -108,35 +143,33 @@ export class HabitacionesComponent implements OnInit {
     this.paginateHabitaciones();
   }
 
+  onPageChangeDisponibilidad(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.paginateCantidadesPorTipo();
+  }
+
   onSubmit(): void {
     if (this.habitacionForm.valid) {
       const habitacionData = this.habitacionForm.value;
-      habitacionData.estado = true; // Establecer el estado como true
+      habitacionData.estado = true;
       this.integrationService.doRegisterHabitacion(habitacionData).subscribe({
         next: response => {
           //console.log('Registro Exitoso:', response);
           this.habitacionForm.reset();
-          this.habitacionForm.get('hotel.idHotel')?.setValue(this.idHotel); // Mantener el idHotel después de resetear el formulario
-          this.integrationService.getHabitacionesByHotel(this.idHotel).subscribe({
-            next: data => {
-              //console.log('Habitaciones cargadas:', data);
-              this.habitaciones = data;
-              this.filteredHabitaciones = data;
-              this.paginateHabitaciones();
-              this.registerPanel.close(); // Cerrar el panel de registro
-              this.hotelPanel.open(); // Abrir el panel de habitaciones del hotel
-            },
-            error: error => {
-              console.error('Error al cargar las habitaciones:', error);
-            }
-          });
+          this.habitacionForm.get('hotel.idHotel')?.setValue(this.idHotel);
+          this.loadHabitaciones();
+          this.registerPanel.close();
+          setTimeout(() => {
+            this.hotelPanel.open();
+          }, 1000);
         },
         error: error => {
           console.error('Error al registrar la habitación:', error);
         }
       });
     } else {
-      this.habitacionForm.markAllAsTouched(); // Marcar todos los campos como tocados para mostrar los errores
+      this.habitacionForm.markAllAsTouched();
     }
   }
 
@@ -144,8 +177,8 @@ export class HabitacionesComponent implements OnInit {
     habitacion.estado = !habitacion.estado;
     this.integrationService.doUpdateHabitacion(habitacion.idHabitacion, habitacion.estado).subscribe({
       next: response => {
-        console.log('Estado actualizado:', response);
-        this.loadHabitaciones(); // Recargar las habitaciones después de actualizar el estado
+        //console.log('Estado actualizado:', response);
+        this.loadHabitaciones();
       },
       error: error => {
         console.error('Error al actualizar el estado de la habitación:', error);

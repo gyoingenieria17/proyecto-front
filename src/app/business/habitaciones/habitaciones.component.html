@@ -39,6 +39,7 @@
         </div>
       </form>
     </mat-expansion-panel>
+
     <mat-expansion-panel #hotelPanel>
       <mat-expansion-panel-header class="accordion-title">
         <mat-panel-title>
@@ -75,6 +76,36 @@
           </tbody>
         </table>
         <mat-paginator [length]="habitaciones.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)">
+        </mat-paginator>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel #disponibilidadPanel>
+      <mat-expansion-panel-header class="accordion-title">
+        <mat-panel-title>
+          Disponibilidad por Tipo
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100">Tipo</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-center">Disponibles</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-center">No Disponibles</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-center">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tipo of paginatedCantidadesPorTipo">
+              <td class="py-2 px-4 border-b border-gray-200">{{ tipo.nombre }}</td>
+              <td class="py-2 px-4 border-b border-gray-200 text-center">{{ tipo.disponibles }}</td>
+              <td class="py-2 px-4 border-b border-gray-200 text-center">{{ tipo.noDisponibles }}</td>
+              <td class="py-2 px-4 border-b border-gray-200 text-center">{{ tipo.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <mat-paginator [length]="cantidadesPorTipo.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChangeDisponibilidad($event)">
         </mat-paginator>
       </div>
     </mat-expansion-panel>

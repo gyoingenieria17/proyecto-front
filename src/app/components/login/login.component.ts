@@ -36,7 +36,7 @@ export class LoginComponent {
 
     this.integration.doLogin(this.request).subscribe({
       next: (res) => {
-        console.log("Recibido:", res); // Imprimir el objeto completo
+        //console.log("Recibido:", res); // Imprimir el objeto completo
 
         // Verificar si la respuesta contiene el token y el nombre de usuario
         if (res && res.token && res.username) {

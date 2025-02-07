@@ -8,12 +8,18 @@ FROM node:20-alpine3.21 AS builder
 WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
 
-FROM nginx:1.21.3-alpine as prod
-EXPOSE 80
-COPY --from=builder /app/dist/proyecto-front /usr/share/nginx/html
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
+# Construir la aplicación con el baseHref correcto
+RUN npm run build -- --base-href /proyecto-front/ --deploy-url /proyecto-front/
 
-CMD [ "nginx", "-g", "daemon off;" ]
+# Etapa 2: Configuración de Nginx para servir la aplicación
+FROM nginx:1.21.3-alpine AS prod
+EXPOSE 8080
+
+# Copiar los archivos compilados
+COPY --from=builder /app/dist/proyecto-front/browser /usr/share/nginx/html/proyecto-front
+
+# Copiar configuración personalizada de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+CMD ["nginx", "-g", "daemon off;"]

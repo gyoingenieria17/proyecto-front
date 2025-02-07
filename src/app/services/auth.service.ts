@@ -12,7 +12,7 @@ export class AuthService {
       return false;
     }
     const token = localStorage.getItem('authToken');
-    console.log('Token detectado en isLoggedIn:', token);
+    //console.log('Token detectado en isLoggedIn:', token);
     return !!token && !this.isTokenExpired(token);
   }
 
@@ -26,7 +26,7 @@ export class AuthService {
   login(token: string): void {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('authToken', token);
-      console.log('Token almacenado en localStorage:', token);
+      //console.log('Token almacenado en localStorage:', token);
     }
   }
 
@@ -44,7 +44,7 @@ export class AuthService {
     try {
       const payload = JSON.parse(atob(token.split('.')[1])); // Decodifica el JWT
       const expiration = payload.exp * 1000; // Convierte a milisegundos
-      console.log('Fecha de expiración del token:', new Date(expiration));
+      //console.log('Fecha de expiración del token:', new Date(expiration));
       return Date.now() > expiration; // Verifica si está expirado
     } catch (e) {
       console.error('Error verificando el token:', e);

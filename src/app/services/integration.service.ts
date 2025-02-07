@@ -12,6 +12,7 @@ const API_URL_GETHOTEL = 'http://localhost:8082/api/v1/rabbitmq/hoteles';
 const API_URL_REGISTERHABITACION='http://localhost:8084/api/v1/habitacion/rabbitmq/send';
 const API_URL_GETHABITACION = 'http://localhost:8084/api/v1/habitaciones';
 const API_URL_UPDATEHABITACION = 'http://localhost:8084/api/v1/habitacion/rabbitmq';
+const API_URL_GETDISPONIBILIDADPORTIPO = 'http://localhost:8083/api/v1/disponibilidad/rabbitmq/municipio/disponibilidad-por-tipo';
 
 @Injectable({
   providedIn: 'root'
@@ -87,4 +88,16 @@ export class IntegrationService {
       })
     );
   }
+
+  getDisponibilidadPorTipo(idMunicipio: number, fechaInicio: string, fechaFin: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { idMunicipio, fechaInicio, fechaFin };
+    return this.http.post(API_URL_GETDISPONIBILIDADPORTIPO, body, { headers }).pipe(
+      catchError(error => {
+        console.error('Error al obtener la disponibilidad por tipo:', error);
+        throw error;
+      })
+    );
+  }
+  
 }
