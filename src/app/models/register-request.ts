@@ -4,6 +4,7 @@ export class RegisterRequest {
   telefono?: string;
   usuario?: string;
   clave?: string;
+  estado?: boolean;
   rol?: {
     id: number;
   };

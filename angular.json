@@ -36,7 +36,8 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/proyecto-front/", 
+              "baseHref": "./",
+              "deployUrl": "./",
               "outputPath": "dist/proyecto-front",
               "budgets": [
                 {

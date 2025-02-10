@@ -24,5 +24,6 @@ export const routes: Routes = [
       { path: 'solicitudes', component: SolicitudesComponent },
       { path: 'habitaciones/:idHotel', component: HabitacionesComponent } // Actualizar la ruta para aceptar idHotel
     ]
-  }
+  },
+  { path: '**', redirectTo: 'login' }  // Redirección en caso de rutas no encontradas
 ];

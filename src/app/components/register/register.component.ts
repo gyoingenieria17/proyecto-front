@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IntegrationService } from '../../services/integration.service';
 import { RegisterRequest } from '../../models/register-request';
@@ -15,9 +15,14 @@ import { RegisterRequest } from '../../models/register-request';
 export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string | null = null;
+  successMessage: string | null = null; // Mensaje de éxito
   userExists: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private integrationService: IntegrationService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private integrationService: IntegrationService,
+    private router: Router // Importar el servicio Router
+  ) {
     this.registerForm = this.formBuilder.group({
       nombre: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -36,6 +41,7 @@ export class RegisterComponent {
         telefono: this.registerForm.get('telefono')?.value,
         usuario: this.registerForm.get('usuario')?.value,
         clave: this.registerForm.get('clave')?.value,
+        estado: true,
         rol: {
           id: 2 // Asignar el rol correspondiente
         }
@@ -46,7 +52,11 @@ export class RegisterComponent {
           console.log('Registro exitoso:', response);
           this.errorMessage = null;
           this.userExists = false;
-          // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
+          this.successMessage = 'Registro exitoso. Redirigiendo al inicio de sesión...';
+          // Redirigir al usuario a la página de inicio de sesión después de 3 segundos
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 3000);
         },
         error => {
           console.log('Error en el registro:', error);
