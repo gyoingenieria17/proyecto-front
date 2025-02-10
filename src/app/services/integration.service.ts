@@ -5,14 +5,24 @@ import { RegisterRequest } from '../models/register-request';
 import { catchError, Observable } from 'rxjs';
 import { LoginResponse } from '../models/login-response';
 
-const API_URL_LOGIN = 'http://localhost:8081/api/v1/usuario/login';
-const API_URL_REGISTER = 'http://localhost:8081/api/v1/usuario/insertar';
-const API_URL_REGISTERHOTEL ='http://localhost:8082/api/v1/rabbitmq/send';
-const API_URL_GETHOTEL = 'http://localhost:8082/api/v1/rabbitmq/hoteles';
-const API_URL_REGISTERHABITACION='http://localhost:8084/api/v1/habitacion/rabbitmq/send';
-const API_URL_GETHABITACION = 'http://localhost:8084/api/v1/habitaciones';
-const API_URL_UPDATEHABITACION = 'http://localhost:8084/api/v1/habitacion/rabbitmq';
-const API_URL_GETDISPONIBILIDADPORTIPO = 'http://localhost:8083/api/v1/disponibilidad/rabbitmq/municipio/disponibilidad-por-tipo';
+//const API_URL_LOGIN = 'http://localhost:8081/api/v1/usuario/login';
+//const API_URL_REGISTER = 'http://localhost:8081/api/v1/usuario/insertar';
+//onst API_URL_REGISTERHOTEL ='http://localhost:8082/api/v1/rabbitmq/send';
+//const API_URL_GETHOTEL = 'http://localhost:8082/api/v1/rabbitmq/hoteles';
+//const API_URL_REGISTERHABITACION='http://localhost:8084/api/v1/habitacion/rabbitmq/send';
+//const API_URL_GETHABITACION = 'http://localhost:8084/api/v1/habitaciones';
+//const API_URL_UPDATEHABITACION = 'http://localhost:8084/api/v1/habitacion/rabbitmq';
+//const API_URL_GETDISPONIBILIDADPORTIPO = 'http://localhost:8083/api/v1/disponibilidad/rabbitmq/municipio/disponibilidad-por-tipo';
+
+const API_URL_LOGIN = 'http://34.66.80.36:8081/api/v1/usuario/login';
+const API_URL_REGISTER = 'http://34.66.80.36:8081/api/v1/usuario/insertar';
+const API_URL_REGISTERHOTEL ='http://34.66.80.36:8082/api/v1/rabbitmq/send';
+const API_URL_GETHOTEL = 'http://34.66.80.36:8082/api/v1/rabbitmq/hoteles';
+const API_URL_REGISTERHABITACION='http://34.66.80.36:8084/api/v1/habitacion/rabbitmq/send';
+const API_URL_GETHABITACION = 'http://34.66.80.36:8084/api/v1/habitaciones';
+const API_URL_UPDATEHABITACION = 'http://34.66.80.36:8084/api/v1/habitacion/rabbitmq';
+const API_URL_GETDISPONIBILIDADPORTIPO = 'http://34.66.80.36:8083/api/v1/disponibilidad/rabbitmq/municipio/disponibilidad-por-tipo';
+
 
 @Injectable({
   providedIn: 'root'
